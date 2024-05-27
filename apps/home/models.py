@@ -10,7 +10,7 @@ class Restaurante(db.Model):
     tipo_cocina = db.Column(db.String(100), nullable=False)
     ubicacion = db.Column(db.String(100), nullable=False)
     numero_mesas = db.Column(db.Integer, nullable=False)
-    #horario = db.Column(db.String(200), nullable=False)
+    horario = db.Column(db.String(100), nullable=False)
 
 class Reserva(db.Model):
     __tablename__ = 'restaurante_reserva'

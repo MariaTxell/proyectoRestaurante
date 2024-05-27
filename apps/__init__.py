@@ -27,7 +27,7 @@ def register_blueprints(app):
 
 
 def configure_database(app):
-    #print('SQLALCHEMY_DATABASE_URI:', app.config['SQLALCHEMY_DATABASE_URI'])
+    print('SQLALCHEMY_DATABASE_URI:', app.config['SQLALCHEMY_DATABASE_URI'])
 
     @app.before_first_request
     def initialize_database():

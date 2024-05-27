@@ -18,7 +18,6 @@ class Users(db.Model, UserMixin):
     email = db.Column(db.String(64), unique=True)
     #password = db.Column(db.LargeBinary)
     password = db.Column(db.String(128))
-    #salt = db.Column(db.String(64))
 
     def __init__(self, **kwargs):
         for property, value in kwargs.items():
@@ -37,11 +36,15 @@ class Users(db.Model, UserMixin):
 
     def __repr__(self):
         return str(self.username)
+    
+    def get_id(self):
+        """Devuelve el id del usuario"""
+        return self.id_usuario
 
 
 @login_manager.user_loader
-def user_loader(id):
-    return Users.query.filter_by(id=id).first()
+def user_loader(id_usuario):
+    return Users.query.filter_by(id_usuario=id_usuario).first()
 
 
 @login_manager.request_loader

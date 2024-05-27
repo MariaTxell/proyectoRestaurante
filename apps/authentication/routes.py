@@ -32,8 +32,28 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
+        # Verificar conexión a la base de datos
+        try:
+            db.session.execute('SELECT 1')
+            print("Conexión a la base de datos exitosa.")
+        except Exception as e:
+            print(f"Error en la conexión a la base de datos: {e}")
+            return render_template('accounts/login.html', msg='Database connection error', form=login_form)
+
         # Locate user
-        user = Users.query.filter_by(username=username).first()
+        #user = Users.query.filter_by(username=username).first()
+        try:
+            user = Users.query.filter_by(username=username).first()
+            print(f"Usuario encontrado: {user}")
+        except Exception as e:
+            print(f"Error al buscar el usuario: {e}")
+            return render_template('accounts/login.html', msg='Error interno', form=login_form)
+
+        #if user:
+        #    print(username)
+        #    print(f"User found: {user.username}")  # Depuración
+        #    print(f"Stored password (binary): {user.password}")  # Depuración
+        #    print(f"Stored password (decoded): {user.password.decode('utf-8', 'ignore')}")  # Depuración
 
         # Check the password
         if user and verify_pass(password, user.password):

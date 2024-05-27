@@ -16,7 +16,8 @@ from jinja2 import TemplateNotFound
 @blueprint.route('/index')
 #@login_required
 def index():
-    restaurantes = Restaurante.query.limit(5).all()
+    restaurantes = Restaurante.query.limit(3).all()
+    print("restaurantes:", restaurantes)
     return render_template('home/index.html', restaurantes=restaurantes)
 
 @blueprint.route('/buscar_restaurantes', methods=['GET', 'POST'])

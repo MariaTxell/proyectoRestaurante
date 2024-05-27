@@ -13,14 +13,14 @@
     
         <h2>Restaurantes Destacados del Mes</h2>
         <div class="row">
-            {% for restaurant in featured_restaurants %}
+            {% for restaurant in restaurantes %}
             <div class="col-md-4">
                 <div class="card">
-                    <!--<img src="{{ url_for('static', filename='images/' + restaurant.imagen) }}" class="card-img-top" alt="{{ restaurant.nombre }}">-->
                     <div class="card-body">
                         <h5 class="card-title">{{ restaurant.nombre }}</h5>
-                        <p class="card-text">{{ restaurant.tipo_cocina }}</p>
-                        <a href="{{ url_for('restaurant_detail', id=restaurant.id_restaurante) }}" class="btn btn-primary">Ver más</a>
+                        <p>- {{ restaurant.ubicacion }}</p>
+                        <p class="card-text">Tipo de cocina: {{ restaurant.tipo_cocina }}</p>
+                        <a href="{{ url_for('home_blueprint.realizar_reserva', id=restaurant.id_restaurante) }}" class="btn btn-primary">Ver más</a>
                     </div>
                 </div>
             </div>
