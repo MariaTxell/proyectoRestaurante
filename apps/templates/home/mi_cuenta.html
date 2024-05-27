@@ -1,0 +1,35 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Inicio {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div class="container">
+        <h1>Mi Cuenta</h1>
+        <h2>Historial de Reservas</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Restaurante</th>
+                    <th>Día</th>
+                    <th>Hora</th>
+                    <th>Mesa</th>
+                    <th>Número de Personas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                <tr>
+                    <td>{{ reserva.restaurante.nombre }}</td>
+                    <td>{{ reserva.dia }}</td>
+                    <td>{{ reserva.hora }}</td>
+                    <td>{{ reserva.mesa }}</td>
+                    <td>{{ reserva.numero_personas }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

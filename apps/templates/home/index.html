@@ -1,0 +1,41 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Inicio {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+  <div>
+      <div class="container">
+        <h1>Bienvenido a Nuestro Sistema de Reservas</h1>
+        <p>Encuentra y reserva mesas en tus restaurantes favoritos fácilmente.</p>
+    
+        <h2>Restaurantes Destacados del Mes</h2>
+        <div class="row">
+            {% for restaurant in featured_restaurants %}
+            <div class="col-md-4">
+                <div class="card">
+                    <!--<img src="{{ url_for('static', filename='images/' + restaurant.imagen) }}" class="card-img-top" alt="{{ restaurant.nombre }}">-->
+                    <div class="card-body">
+                        <h5 class="card-title">{{ restaurant.nombre }}</h5>
+                        <p class="card-text">{{ restaurant.tipo_cocina }}</p>
+                        <a href="{{ url_for('restaurant_detail', id=restaurant.id_restaurante) }}" class="btn btn-primary">Ver más</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    
+        <h2>Acerca de Nosotros</h2>
+        <p>Información sobre la plataforma y el equipo.</p>
+    
+        <h2>Contacto</h2>
+        <p>Formulario o información de contacto.</p>
+    </div>
+
+    {% include "includes/footer.html" %}
+  
+  </div>
+
+{% endblock content %}

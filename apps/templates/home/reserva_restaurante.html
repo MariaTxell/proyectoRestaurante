@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Inicio {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div class="container">
+        <h1>Reservar en {{ restaurante.nombre }}</h1>
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.dia.label(class="form-control-label") }}
+                {{ form.dia(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.hora.label(class="form-control-label") }}
+                {{ form.hora(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.mesa.label(class="form-control-label") }}
+                {{ form.mesa(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.numero_personas.label(class="form-control-label") }}
+                {{ form.numero_personas(class="form-control") }}
+            </div>
+            <button type="submit" class="btn btn-primary">{{ form.submit() }}</button>
+        </form>
+    </div>
+{% endblock %}
