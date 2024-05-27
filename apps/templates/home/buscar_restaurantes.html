@@ -9,7 +9,7 @@
 <div class="container">
     <h1>Buscar Restaurantes</h1>
     <!-- Agregar filtros -->
-    <form method="post">
+    <form method="POST">
         <div class="form-group">
             <label for="tipo_cocina">Tipo de Cocina</label>
             <input type="text" class="form-control" id="tipo_cocina" name="tipo_cocina">
@@ -25,7 +25,7 @@
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
     <!-- Mostrar restaurantes filtrados -->
-    <div class="row mt-4">
+    <!--<div class="row mt-4">
         {% for restaurante in restaurantes %}
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
@@ -39,6 +39,6 @@
             </div>
         </div>
         {% endfor %}
-    </div>
+    </div>-->
 </div>
 {% endblock %}

@@ -16,7 +16,9 @@ class Users(db.Model, UserMixin):
     id_usuario = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True)
     email = db.Column(db.String(64), unique=True)
-    password = db.Column(db.LargeBinary)
+    #password = db.Column(db.LargeBinary)
+    password = db.Column(db.String(128))
+    #salt = db.Column(db.String(64))
 
     def __init__(self, **kwargs):
         for property, value in kwargs.items():
@@ -29,6 +31,7 @@ class Users(db.Model, UserMixin):
 
             if property == 'password':
                 value = hash_pass(value)  # we need bytes here (not plain str)
+                print(f'Password hashed: {value}')  # Agregar esta línea para depuración
 
             setattr(self, property, value)
 

@@ -14,7 +14,7 @@ from jinja2 import TemplateNotFound
 
 
 @blueprint.route('/index')
-@login_required
+#@login_required
 def index():
     restaurantes = Restaurante.query.limit(5).all()
     return render_template('home/index.html', restaurantes=restaurantes)
@@ -57,13 +57,13 @@ def realizar_reserva():
     return render_template('home/reserva_restaurante.html', restaurante=restaurante, form=form)
 
 @blueprint.route('/mi_cuenta')
-@login_required
+#@login_required
 def mi_cuenta():
     reservas = Reserva.query.filter_by(username=current_user.username).all()
     return render_template('home/mi_cuenta.html', reservas=reservas)
 
 @blueprint.route('/<template>')
-@login_required
+#@login_required
 def route_template(template):
 
     try:
