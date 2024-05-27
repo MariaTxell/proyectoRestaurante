@@ -8,7 +8,7 @@
 {% block content %}
     <div class="container">
         <h1>Reservar en {{ restaurante.nombre }}</h1>
-        <form method="post">
+        <form method="POST">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{ form.dia.label(class="form-control-label") }}
@@ -26,7 +26,7 @@
                 {{ form.numero_personas.label(class="form-control-label") }}
                 {{ form.numero_personas(class="form-control") }}
             </div>
-            <button type="submit" class="btn btn-primary">{{ form.submit() }}</button>
+            <button type="submit" class="btn btn-primary">Confimar reserva</button>
         </form>
     </div>
 {% endblock %}

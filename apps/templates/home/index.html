@@ -20,7 +20,7 @@
                         <h5 class="card-title">{{ restaurant.nombre }}</h5>
                         <p>- {{ restaurant.ubicacion }}</p>
                         <p class="card-text">Tipo de cocina: {{ restaurant.tipo_cocina }}</p>
-                        <a href="{{ url_for('home_blueprint.realizar_reserva', id=restaurant.id_restaurante) }}" class="btn btn-primary">Ver más</a>
+                        <a href="{{ url_for('home_blueprint.buscar_restaurantes') }}" class="btn btn-primary">Ver más</a>
                     </div>
                 </div>
             </div>

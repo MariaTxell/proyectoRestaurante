@@ -25,20 +25,19 @@
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
     <!-- Mostrar restaurantes filtrados -->
-    <!--<div class="row mt-4">
+    <div class="row mt-4">
         {% for restaurante in restaurantes %}
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
-                <img class="card-img-top" src="{{ url_for('static', filename='images/placeholder.png') }}" alt="Imagen Restaurante">
                 <div class="card-body">
                     <h5 class="card-title">{{ restaurante.nombre }}</h5>
                     <p class="card-text">{{ restaurante.tipo_cocina }}</p>
                     <p class="card-text">{{ restaurante.ubicacion }}</p>
-                    <a href="{{ url_for('home.restaurante', id=restaurante.id_restaurante) }}" class="btn btn-primary">Reservar</a>
+                    <a href="{{ url_for('home_blueprint.realizar_reserva', id=restaurante.id_restaurante) }}" class="btn btn-primary">Reservar</a>
                 </div>
             </div>
         </div>
         {% endfor %}
-    </div>-->
+    </div>
 </div>
 {% endblock %}
