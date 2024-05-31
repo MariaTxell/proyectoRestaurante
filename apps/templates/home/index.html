@@ -17,10 +17,12 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{ restaurant.nombre }}</h5>
-                        <p>- {{ restaurant.ubicacion }}</p>
+                        <h5 class="card-title">
+                            <span>{{ restaurant.nombre }}</span> 
+                            <span class="restaurant-location">- {{ restaurant.ubicacion }}</span>
+                        </h5>
                         <p class="card-text">Tipo de cocina: {{ restaurant.tipo_cocina }}</p>
-                        <a href="{{ url_for('home_blueprint.buscar_restaurantes') }}" class="btn btn-primary">Ver más</a>
+                        <a href="{{ url_for('home_blueprint.buscar_restaurantes', id=restaurant.id_restaurante) }}" class="btn btn-primary">Ver más</a>
                     </div>
                 </div>
             </div>

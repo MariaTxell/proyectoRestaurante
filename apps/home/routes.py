@@ -21,24 +21,39 @@ def index():
     return render_template('home/index.html', restaurantes=restaurantes)
 
 @blueprint.route('/buscar_restaurantes', methods=['GET', 'POST'])
+@login_required
 def buscar_restaurantes():
     if request.method == 'POST':
+        # Procesar los filtros del formulario
+        nombre = request.form.get('nombre')
         tipo_cocina = request.form.get('tipo_cocina')
         ubicacion = request.form.get('ubicacion')
         horario = request.form.get('horario')
         filtros = []
+        if nombre:
+            filtros.append(Restaurante.nombre.contains(nombre))
         if tipo_cocina:
             filtros.append(Restaurante.tipo_cocina == tipo_cocina)
         if ubicacion:
             filtros.append(Restaurante.ubicacion == ubicacion)
         if horario:
-            filtros.append(Restaurante.horario.contains(horario))
+            filtros.append(Restaurante.horario == horario)
         restaurantes = Restaurante.query.filter(*filtros).all()
     else:
+        # Obtener todos los restaurantes si no hay filtros
         restaurantes = Restaurante.query.all()
+    
+    id_restaurante = request.args.get('id')
+    if id_restaurante:
+        # Si se pasa un id, cargar el restaurante correspondiente
+        restaurante = Restaurante.query.get(id_restaurante)
+        if restaurante:
+            restaurantes = Restaurante.query.filter_by(nombre=restaurante.nombre).all()
+            return render_template('home/buscar_restaurantes.html', restaurantes=restaurantes, restaurante=restaurante)
     return render_template('home/buscar_restaurantes.html', restaurantes=restaurantes)
 
 @blueprint.route('/realizar_reserva/<int:id>', methods=['GET', 'POST'])
+@login_required
 def realizar_reserva(id):
     restaurante = Restaurante.query.get_or_404(id)
     form = ReservaForm()
@@ -49,7 +64,7 @@ def realizar_reserva(id):
             hora=form.hora.data,
             mesa=form.mesa.data,
             numero_personas=form.numero_personas.data,
-            username=current_user.username
+            id_usuario=current_user.id 
         )
         db.session.add(reserva)
         db.session.commit()

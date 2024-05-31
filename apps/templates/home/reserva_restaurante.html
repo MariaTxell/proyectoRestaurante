@@ -3,11 +3,17 @@
 {% block title %} Inicio {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+    <style>
+        .restaurant-name {
+            color: #67748E;
+        }
+    </style>
+{% endblock stylesheets %}
 
 {% block content %}
     <div class="container">
-        <h1>Reservar en {{ restaurante.nombre }}</h1>
+        <h1>Reservar en <span class="restaurant-name">{{ restaurante.nombre }}</span></h1>
         <form method="POST">
             {{ form.hidden_tag() }}
             <div class="form-group">

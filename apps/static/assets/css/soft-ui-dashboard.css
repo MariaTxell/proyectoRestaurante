@@ -4568,6 +4568,11 @@ textarea.form-control-lg {
   color: var(--bs-card-color);
 }
 
+.restaurant-location {
+  color: #67748E;
+  font-size: 16px;
+}
+
 .card-title {
   margin-bottom: var(--bs-card-title-spacer-y);
 }

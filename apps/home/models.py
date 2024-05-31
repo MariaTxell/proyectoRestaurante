@@ -20,4 +20,4 @@ class Reserva(db.Model):
     hora = db.Column(db.String(5), nullable=False)
     mesa = db.Column(db.String(10), nullable=False)
     numero_personas = db.Column(db.Integer, nullable=False)
-    username = db.Column(db.String(80), db.ForeignKey('lista_usuarios.username'), nullable=False)
+    id_usuario = db.Column(db.String(80), db.ForeignKey('lista_usuarios.id_usuario'), nullable=False)

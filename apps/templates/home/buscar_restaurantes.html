@@ -9,20 +9,46 @@
 <div class="container">
     <h1>Buscar Restaurantes</h1>
     <!-- Agregar filtros -->
-    <form method="POST">
+    <form method="POST" id="search-form">
+        <div class="form-group">
+            <label for="nombre">Nombre del Restaurante</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{% if restaurante %}{{ restaurante.nombre }}{% endif %}">
+        </div>
         <div class="form-group">
             <label for="tipo_cocina">Tipo de Cocina</label>
-            <input type="text" class="form-control" id="tipo_cocina" name="tipo_cocina">
+            <select class="form-control" id="tipo_cocina" name="tipo_cocina">
+                <option value="">Seleccionar tipo de cocina</option>
+                <option value="vegana">Vegana</option>
+                <option value="barbacoa">Barbacoa</option>
+                <option value="italiana">Italiana</option>
+                <option value="china">China</option>
+                <option value="mexicana">Mexicana</option>
+                <option value="japonesa">Japonesa</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="ubicacion">Ubicación</label>
-            <input type="text" class="form-control" id="ubicacion" name="ubicacion">
+            <select class="form-control" id="ubicacion" name="ubicacion">
+                <option value="">Seleccionar ubicación</option>
+                <option value="barcelona">Barcelona</option>
+                <option value="granollers">Granollers</option>
+                <option value="granollers">Madrid</option>
+                <option value="sabadell">Sabadell</option>
+                <option value="terrassa">Terrassa</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="horario">Horario</label>
-            <input type="text" class="form-control" id="horario" name="horario">
+            <select class="form-control" id="horario" name="horario">
+                <option value="">Seleccionar horario</option>
+                <option value="completo">Completo</option>
+                <option value="matinal">Matinal</option>
+                <option value="mediodia">Mediodia</option>
+                <option value="nocturno">Nocturno</option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Buscar</button>
+        <button type="button" class="btn btn-secondary" id="clear-filters">Borrar Filtros</button>
     </form>
     <!-- Mostrar restaurantes filtrados -->
     <div class="row mt-4">
@@ -31,8 +57,9 @@
             <div class="card mb-4 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">{{ restaurante.nombre }}</h5>
-                    <p class="card-text">{{ restaurante.tipo_cocina }}</p>
-                    <p class="card-text">{{ restaurante.ubicacion }}</p>
+                    <p class="card-text">Ubicación: {{ restaurante.ubicacion }}</p>
+                    <p class="card-text">Tipo de cocina: {{ restaurante.tipo_cocina }}</p>
+                    <p class="card-text">Horario: {{ restaurante.horario }}</p>
                     <a href="{{ url_for('home_blueprint.realizar_reserva', id=restaurante.id_restaurante) }}" class="btn btn-primary">Reservar</a>
                 </div>
             </div>
@@ -40,4 +67,46 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+    // Al enviar el formulario, almacenar los valores de los campos de entrada en el localStorage
+    document.getElementById('search-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevenir el envío del formulario
+
+        // Almacenar los valores actuales de los campos de entrada en el sessionStorage
+        sessionStorage.setItem('nombre', document.getElementById('nombre').value);
+        sessionStorage.setItem('tipo_cocina', document.getElementById('tipo_cocina').value);
+        sessionStorage.setItem('ubicacion', document.getElementById('ubicacion').value);
+        sessionStorage.setItem('horario', document.getElementById('horario').value);
+
+        // Enviar el formulario
+        this.submit();
+    });
+
+    // Al cargar la página, restablecer los valores de los campos de entrada desde el localStorage
+    window.addEventListener('load', function() {
+        // Verificar si el campo de entrada del nombre del restaurante ya tiene un valor establecido en el HTML
+        var nombreInput = document.getElementById('nombre');
+        if (nombreInput.value === '') {
+            // Si el campo de entrada está vacío, restablecer su valor desde el sessionStorage
+            nombreInput.value = sessionStorage.getItem('nombre') || '';
+        }
+        document.getElementById('tipo_cocina').value = sessionStorage.getItem('tipo_cocina') || '';
+        document.getElementById('ubicacion').value = sessionStorage.getItem('ubicacion') || '';
+        document.getElementById('horario').value = sessionStorage.getItem('horario') || '';
+    });
+
+    // Limpiar los valores de los campos de entrada y el sessionStorage al hacer clic en "Borrar Filtros"
+    document.getElementById('clear-filters').addEventListener('click', function() {
+        document.getElementById('nombre').value = '';
+        document.getElementById('tipo_cocina').value = '';
+        document.getElementById('ubicacion').value = '';
+        document.getElementById('horario').value = '';
+
+        sessionStorage.removeItem('nombre');
+        sessionStorage.removeItem('tipo_cocina');
+        sessionStorage.removeItem('ubicacion');
+        sessionStorage.removeItem('horario');
+    });
+</script>
 {% endblock %}

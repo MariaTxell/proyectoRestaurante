@@ -31,6 +31,7 @@ def login():
         # read form data
         username = request.form['username']
         password = request.form['password']
+        remember = 'remember' in request.form
 
         # Verificar conexión a la base de datos
         try:
@@ -57,9 +58,10 @@ def login():
 
         # Check the password
         if user and verify_pass(password, user.password):
-
-            login_user(user)
-            return redirect(url_for('authentication_blueprint.route_default'))
+            #login_user(user)
+            #return redirect(url_for('authentication_blueprint.route_default'))
+            login_user(user, remember=remember)
+            return redirect(url_for('home_blueprint.index'))
 
         # Something (user or pass) is not ok
         return render_template('accounts/login.html',
