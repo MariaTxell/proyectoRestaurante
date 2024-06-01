@@ -1,18 +1,17 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} Ayuda {% endblock title %}
+{% block title %} Contacto {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
 <div class="container">
-    <h1>Formulario de contacto directo</h1>
-    <!-- Agregar filtros -->
+    <h1>Formulario de contacto</h1>
     <form method="POST">
         <div class="form-group">
-            <label for="tipo_cocina">Email de contacto</label>
-            <input type="text" class="form-control" id="tipo_cocina" name="tipo_cocina">
+            <label for="email">Email de contacto</label>
+            <input type="text" class="form-control" id="email" name="email" value="{{ usuario.email }}">
         </div>
         <div class="form-group">
             <label for="incidencia">Tipo de incidencia</label>
@@ -24,6 +23,5 @@
         </div>
         <button type="submit" class="btn btn-primary">Enviar email</button>
     </form>
-    <!-- Mostrar restaurantes filtrados -->
 </div>
 {% endblock content %}

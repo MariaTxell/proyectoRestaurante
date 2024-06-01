@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} Inicio {% endblock title %}
+{% block title %} Realizar Reserva {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
@@ -14,6 +14,17 @@
 {% block content %}
     <div class="container">
         <h1>Reservar en <span class="restaurant-name">{{ restaurante.nombre }}</span></h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <form method="POST">
             {{ form.hidden_tag() }}
             <div class="form-group">
@@ -25,8 +36,12 @@
                 {{ form.hora(class="form-control") }}
             </div>
             <div class="form-group">
-                {{ form.mesa.label(class="form-control-label") }}
-                {{ form.mesa(class="form-control") }}
+                <label for="mesa" class="form-control-label">Mesa</label>
+                <select id="mesa" name="mesa" class="form-control">
+                    {% for value, label in form.mesa.choices %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="form-group">
                 {{ form.numero_personas.label(class="form-control-label") }}

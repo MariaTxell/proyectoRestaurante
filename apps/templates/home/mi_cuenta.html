@@ -1,16 +1,42 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} Inicio {% endblock title %}
+{% block title %} Mi cuenta {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+    <style>
+        .text-email {
+            margin-right: 10px;
+        }
+
+        .btn-email {
+            margin-top: 10px;
+        }
+
+        .btn-cancelar {
+            margin: 0;
+            padding: 10px 20px;
+        }
+    </style>
+{% endblock stylesheets %}
 
 {% block content %}
     <div class="container">
         <h1>Mi Cuenta</h1>
+        <br>
+        <h2>Información de Usuario</h2>
+        <div class="profile-info">
+            <div>
+                <p><strong>Usuario:</strong> {{ current_user.username }}</p>
+                <p><strong>Email:</strong> <span class="text-email">{{ current_user.email }}</span> <a class="btn btn-primary btn-sm align-middle ml-2 btn-email" href="{{ url_for('home_blueprint.update_email') }}">Editar</a></p>
+            </div>
+            <a href="{{ url_for('home_blueprint.update_password') }}" class="btn btn-secondary">Cambiar Contraseña</a>
+        </div>
+
+        <br><br>
         <h2>Historial de Reservas</h2>
         <table class="table">
-            <thead>
+            <thead class="text-center">
                 <tr>
                     <th>Restaurante</th>
                     <th>Día</th>
@@ -19,7 +45,7 @@
                     <th>Número de Personas</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-center">
                 {% for reserva in reservas %}
                 <tr>
                     <td>{{ reserva.restaurante.nombre }}</td>
@@ -27,6 +53,10 @@
                     <td>{{ reserva.hora }}</td>
                     <td>{{ reserva.mesa }}</td>
                     <td>{{ reserva.numero_personas }}</td>
+                    <td>{% if reserva.dia > now.date() %}
+                            <a class="btn btn-danger btn-cancelar" href="{{ url_for('home_blueprint.cancelar_reserva', id=reserva.id_reserva) }}">Cancelar Reserva</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

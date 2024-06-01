@@ -32,7 +32,7 @@
                 <option value="">Seleccionar ubicación</option>
                 <option value="barcelona">Barcelona</option>
                 <option value="granollers">Granollers</option>
-                <option value="granollers">Madrid</option>
+                <option value="madrid">Madrid</option>
                 <option value="sabadell">Sabadell</option>
                 <option value="terrassa">Terrassa</option>
             </select>
@@ -107,6 +107,9 @@
         sessionStorage.removeItem('tipo_cocina');
         sessionStorage.removeItem('ubicacion');
         sessionStorage.removeItem('horario');
+
+        // Enviar el formulario para mostrar todos los restaurantes sin filtros
+        document.getElementById('search-form').submit();
     });
 </script>
 {% endblock %}

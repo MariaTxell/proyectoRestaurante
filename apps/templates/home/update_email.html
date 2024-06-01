@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Mi cuenta {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="container">
+        <h1>Cambiar Email</h1>
+        <div class="update-form">
+            <form method="POST">
+                <div class="form-group">
+                    <label for="new_email">Nuevo Email</label>
+                    <input type="password" class="form-control" id="new_email" name="new_email" value="{{ current_user.email }}" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Cambiar Email</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

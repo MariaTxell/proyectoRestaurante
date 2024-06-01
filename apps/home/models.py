@@ -11,6 +11,7 @@ class Restaurante(db.Model):
     ubicacion = db.Column(db.String(100), nullable=False)
     numero_mesas = db.Column(db.Integer, nullable=False)
     horario = db.Column(db.String(100), nullable=False)
+    reserv_restaurante = db.relationship('Reserva', backref='restaurante', overlaps='reservas_restaurante')
 
 class Reserva(db.Model):
     __tablename__ = 'restaurante_reserva'
@@ -20,4 +21,6 @@ class Reserva(db.Model):
     hora = db.Column(db.String(5), nullable=False)
     mesa = db.Column(db.String(10), nullable=False)
     numero_personas = db.Column(db.Integer, nullable=False)
-    id_usuario = db.Column(db.String(80), db.ForeignKey('lista_usuarios.id_usuario'), nullable=False)
+    id_usuario = db.Column(db.Integer, nullable=False)
+    # Define the relationship to Restaurante
+    restaurante_relacion = db.relationship('Restaurante', backref='reservas', overlaps='reservas_restaurante')
