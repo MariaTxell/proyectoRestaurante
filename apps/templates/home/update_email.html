@@ -8,12 +8,25 @@
 
 {% block content %}
     <div class="container">
+        <!-- Plantilla para la página de "Cambiar Email", que permite a los usuarios cambiar su dirección de correo electrónico -->
         <h1>Cambiar Email</h1>
+
+        <!-- Sección de mensajes de error, que muestra mensajes de error debajo del título en caso de que el correo ya exista o haya algún problema al cambiarlo -->
+        {% if msg %}
+            <!-- Si es un mensaje de error se muestra el mensaje en rojo -->
+            <div class="alert alert-danger" role="alert">
+                {{ msg }}
+            </div>
+        {% endif %}
+
+        <!-- Sección del formulario, donde los usuarios pueden ingresar su nuevo correo electrónico -->
         <div class="update-form">
             <form method="POST">
-                <div class="form-group">
-                    <label for="new_email">Nuevo Email</label>
-                    <input type="password" class="form-control" id="new_email" name="new_email" value="{{ current_user.email }}" required>
+                {{ form.hidden_tag() }}
+
+                <label>Nuevo Email</label>
+                <div class="mb-3">
+                    {{ form.email(class="input form-control", type="email", value=current_user.email) }}
                 </div>
                 <button type="submit" class="btn btn-primary">Cambiar Email</button>
             </form>

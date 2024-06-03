@@ -32,22 +32,3 @@ def verify_pass(provided_password, stored_password):
     pwdhash = binascii.hexlify(pwdhash).decode('ascii')
     return pwdhash.startswith(stored_password)
 
-    print("Provided Password:", provided_password)
-    print("Stored Password:", stored_password)
-
-    salt = stored_password[:64]
-    stored_password = stored_password[64:]
-    print("Salt:", salt)
-    print("Stored Password (After Removing Salt):", stored_password)
-
-    pwdhash = hashlib.pbkdf2_hmac('sha512',
-                                  provided_password.encode('utf-8'),
-                                  salt.encode('ascii'),
-                                  100000)
-    pwdhash = binascii.hexlify(pwdhash).decode('ascii')
-    print("Computed Password Hash:", pwdhash)
-
-    print("Is Password Correct?", pwdhash.startswith(stored_password))
-    
-    #return stored_password == stored_password
-    return pwdhash.startswith(stored_password)

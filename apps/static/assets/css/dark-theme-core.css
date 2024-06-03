@@ -112,13 +112,20 @@ body.dark-page .navbar.blur-rounded .navbar-nav .nav-link {
 body.dark-page label, body.dark-page .form-label {
   color: #d7d7d7 !important;
 }
+
+/*añadimos la clase inventada para las tarjetas en Inicio, para que tenga su versión Dark Mode*/
+body.dark-page .restaurant-location {
+  color: #d7d7d7;
+}
+
 body.dark-page input {
-  background-color: rgba(40, 49, 73, 0.6);
+  /*background-color: rgba(40, 49, 73, 0.6);*/
+  background-color: #fff;
   border-color: rgba(64, 75, 105, 0.6);
 }
 body.dark-page input.form-control:focus {
-  color: #d7d7d7 !important;
-  background-color: rgba(40, 49, 73, 0.6);
+  /*color: #d7d7d7 !important;
+  background-color: rgba(40, 49, 73, 0.6);*/
   border-color: #283149;
   outline: 0;
   box-shadow: 0 0 0 2px #283149;

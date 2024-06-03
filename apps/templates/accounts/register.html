@@ -38,6 +38,8 @@
               <div class="card-header text-center pt-4">
                 <h5>Regístrate con</h5>
               </div>
+              <!-- Botones para registrarse con Facebook, Apple o Google -->
+              {% if not success %}
               <div class="row px-xl-5 px-sm-4 px-3">
                 <div class="col-3 ms-auto px-1">
                   <a class="btn btn-outline-light w-100" href="javascript:;">
@@ -77,15 +79,24 @@
                   </a>
                 </div>
                 <div class="mt-2 position-relative text-center">
+                  <!-- Donde se escribe el "o" en caso de haber un mensaje de error se muestra -->
                   <p class="text-sm font-weight-bold mb-2 text-secondary text-border d-inline z-index-2 px-3">
-                    o
+                    {% if msg %}
+                      <span class="text-danger">{{ msg | safe }}</span>
+                    {% else %}
+                        o
+                    {% endif %}
                   </p>
                 </div>
               </div>
+              {% endif %}
 
               <div class="card-body">
-
                 {% if success %} 
+                  <!-- Si se ha recibido success, se ha registrado correctamente, se muestra el mensaje -->
+                  <div class="alert alert-success text-center">
+                    {{ msg }}
+                  </div>
                 
                   <p class="text-sm mt-3 mb-0 text-center"> 
                     <div class="text-center">

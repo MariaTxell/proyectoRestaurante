@@ -4,8 +4,8 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import Email, DataRequired, EqualTo, Length
+from wtforms import StringField, PasswordField
+from wtforms.validators import Email, DataRequired
 
 # login and registration
 
@@ -17,7 +17,6 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password',
                              id='pwd_login',
                              validators=[DataRequired()])
-    remember = BooleanField('RememberMe')
 
 
 class CreateAccountForm(FlaskForm):
@@ -32,10 +31,18 @@ class CreateAccountForm(FlaskForm):
                              validators=[DataRequired()])
     
 
-class EditAccountForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Nueva Contraseña', validators=[
-        Length(min=6), EqualTo('confirm_password', message='Las contraseñas deben coincidir')
-    ])
-    confirm_password = PasswordField('Confirmar Nueva Contraseña')
-    submit = SubmitField('Actualizar')
+# Definición del formulario para actualizar el correo electrónico
+class UpdateEmailForm(FlaskForm):
+    email = StringField('Nuevo Email', 
+                        id='new_email',
+                        validators=[DataRequired(), Email()])
+
+
+# Definición del formulario para actualizar la contraseña
+class UpdatePasswordForm(FlaskForm):
+    new_password = PasswordField('Nueva Contraseña', 
+                                id='new_password',
+                                validators=[DataRequired()])
+    confirm_password = PasswordField('Confirmar Nueva Contraseña', 
+                                    id='confirm_password',
+                                    validators=[DataRequired()])

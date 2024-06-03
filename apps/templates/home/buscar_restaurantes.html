@@ -1,12 +1,13 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} Inicio {% endblock title %}
+{% block title %} Buscar Restaurantes {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
 <div class="container">
+    <!-- Plantilla para el apartado de "Buscar Restaurante" (lo primero que se ve al pulsar en Reservar Restaurante), que permite buscar restaurantes utilizando los filtros y seleccionar uno para reservar -->
     <h1>Buscar Restaurantes</h1>
     <!-- Agregar filtros -->
     <form method="POST" id="search-form">
@@ -50,7 +51,7 @@
         <button type="submit" class="btn btn-primary">Buscar</button>
         <button type="button" class="btn btn-secondary" id="clear-filters">Borrar Filtros</button>
     </form>
-    <!-- Mostrar restaurantes filtrados -->
+    <!-- Mostrar en formato tarjetas los restaurantes filtrados, con la información de cada uno -->
     <div class="row mt-4">
         {% for restaurante in restaurantes %}
         <div class="col-md-4">
@@ -60,6 +61,7 @@
                     <p class="card-text">Ubicación: {{ restaurante.ubicacion }}</p>
                     <p class="card-text">Tipo de cocina: {{ restaurante.tipo_cocina }}</p>
                     <p class="card-text">Horario: {{ restaurante.horario }}</p>
+                    <!-- Al pulsar el 'Reservar' envia el id del resturante a la ruta para reservar en un restaurantes -->
                     <a href="{{ url_for('home_blueprint.realizar_reserva', id=restaurante.id_restaurante) }}" class="btn btn-primary">Reservar</a>
                 </div>
             </div>

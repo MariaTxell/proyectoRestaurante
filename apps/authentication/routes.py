@@ -12,10 +12,10 @@ from flask_login import (
 
 from apps import db, login_manager
 from apps.authentication import blueprint
-from apps.authentication.forms import LoginForm, CreateAccountForm
+from apps.authentication.forms import LoginForm, CreateAccountForm, UpdateEmailForm, UpdatePasswordForm
 from apps.authentication.models import Users
+from apps.authentication.util import verify_pass, hash_pass
 
-from apps.authentication.util import verify_pass
 
 @blueprint.route('/')
 def route_default():
@@ -31,7 +31,6 @@ def login():
         # read form data
         username = request.form['username']
         password = request.form['password']
-        remember = 'remember' in request.form
 
         # Verificar conexión a la base de datos
         try:
@@ -49,19 +48,12 @@ def login():
         except Exception as e:
             print(f"Error al buscar el usuario: {e}")
             return render_template('accounts/login.html', msg='Error interno', form=login_form)
-
-        #if user:
-        #    print(username)
-        #    print(f"User found: {user.username}")  # Depuración
-        #    print(f"Stored password (binary): {user.password}")  # Depuración
-        #    print(f"Stored password (decoded): {user.password.decode('utf-8', 'ignore')}")  # Depuración
-
+        
         # Check the password
         if user and verify_pass(password, user.password):
-            #login_user(user)
-            #return redirect(url_for('authentication_blueprint.route_default'))
-            login_user(user, remember=remember)
+            login_user(user)
             return redirect(url_for('home_blueprint.index'))
+            #return redirect(url_for('authentication_blueprint.route_default'))
 
         # Something (user or pass) is not ok
         return render_template('accounts/login.html',
@@ -69,8 +61,7 @@ def login():
                                form=login_form)
 
     if not current_user.is_authenticated:
-        return render_template('accounts/login.html',
-                               form=login_form)
+        return render_template('accounts/login.html', form=login_form)
     return redirect(url_for('home_blueprint.index'))
 
 
@@ -86,7 +77,7 @@ def register():
         user = Users.query.filter_by(username=username).first()
         if user:
             return render_template('accounts/register.html',
-                                   msg='Username already registered',
+                                   msg='El nombre de usuario ya está registrado',
                                    success=False,
                                    form=create_account_form)
 
@@ -94,7 +85,7 @@ def register():
         user = Users.query.filter_by(email=email).first()
         if user:
             return render_template('accounts/register.html',
-                                   msg='Email already registered',
+                                   msg='El correo electrónico ya está registrado',
                                    success=False,
                                    form=create_account_form)
 
@@ -107,13 +98,75 @@ def register():
         logout_user()
 
         return render_template('accounts/register.html',
-                               msg='User created successfully.',
+                               msg='Usuario creado con éxito.',
                                success=True,
                                form=create_account_form)
 
     else:
         return render_template('accounts/register.html', form=create_account_form)
+    
+# Ruta para actualizar el correo electrónico del usuario
+@blueprint.route('/update_email', methods=['GET', 'POST'])
+def update_email():
+    form = UpdateEmailForm(request.form)
 
+    # Comprobar si el formulario ha sido enviado y es válido
+    if form.validate_on_submit():
+        # Acceder al dato del campo de correo electrónico
+        email = form.email.data
+                
+        # Buscar el usuario actual en la base de datos utilizando el username
+        usuario = Users.query.filter_by(username=current_user.username).first()
+        
+        # Comprobar si el nuevo correo electrónico ya existe para otro usuario
+        existing_user = Users.query.filter_by(email=email).first()
+        if existing_user:
+            return render_template('home/update_email.html',
+                                   msg='El correo electrónico ya está en uso por otro usuario',
+                                   success=False,
+                                   form=form)
+        else:
+            usuario.email = email
+            try:
+                db.session.commit()  # Confirmar los cambios en la base de datos
+                print("Correo actualizado con éxito")
+            except Exception as e:
+                db.session.rollback()  # Revertir la transacción en caso de error
+                return render_template('home/update_email.html',
+                                   msg='Error al actualizar el correo electrónico:  + {{ str(e) }}',
+                                   success=False,
+                                   form=form)
+
+            # Redirigir al usuario a su cuenta después de la actualización
+            return redirect(url_for('home_blueprint.mi_cuenta'))
+    
+    # Renderizar la plantilla con el formulario
+    return render_template('home/update_email.html', form=form)
+
+# Ruta para actualizar la contraseña del usuario
+@blueprint.route('/update_password', methods=['GET', 'POST'])
+def update_password():
+    form = UpdatePasswordForm()
+
+    # Comprobar si el formulario ha sido enviado y es válido
+    if form.validate_on_submit():
+        # Buscar el usuario actual en la base de datos utilizando el username
+        usuario = Users.query.filter_by(username=current_user.username).first()
+
+        new_password = form.new_password.data
+        confirm_password = form.confirm_password.data
+        
+        if new_password != confirm_password:
+            return render_template('home/update_password.html',
+                                   msg='Las nuevas contraseñas no coinciden',
+                                   success=False,
+                                   form=form)
+        
+        usuario.password = hash_pass(new_password)
+        db.session.commit()
+        print('Contraseña actualizada con éxito', 'success')
+        return redirect(url_for('home_blueprint.mi_cuenta'))
+    return render_template('home/update_password.html', form=form)
 
 @blueprint.route('/logout')
 def logout():

@@ -1,27 +1,30 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} Inicio {% endblock title %}
+{% block title %} Contacto {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
   <div>
-      <div class="container">
+    <!-- Plantilla para la página de "Inicio", con los tres restaurante mas reservados del mes, información sobre la pagina e información de contacto -->
+    <div class="container">
         <h1>Bienvenido a Nuestro Sistema de Reservas</h1>
         <p>Encuentra y reserva mesas en tus restaurantes favoritos fácilmente.</p>
     
         <h2>Restaurantes Destacados del Mes</h2>
         <div class="row">
+            <!-- Muestra en formato tarjeta los tres restaurantes más reservados del més, con información del nombre, ubicación y tipo de cocina-->
             {% for restaurant in restaurantes %}
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
                             <span>{{ restaurant.nombre }}</span> 
-                            <span class="restaurant-location">- {{ restaurant.ubicacion }}</span>
+                            <span class="restaurant-location">- {{ restaurant.ubicacion }}</span> <!-- La clase "restaurant-location" la hemos inventado para poder poner la ubicación en el titulo pero con el color y tamaño de los textos-->
                         </h5>
                         <p class="card-text">Tipo de cocina: {{ restaurant.tipo_cocina }}</p>
+                        <!-- Al pulsar el 'Ver más' envia el id del resturante a la ruta para buscar restaurantes -->
                         <a href="{{ url_for('home_blueprint.buscar_restaurantes', id=restaurant.id_restaurante) }}" class="btn btn-primary">Ver más</a>
                     </div>
                 </div>

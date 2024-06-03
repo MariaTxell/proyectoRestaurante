@@ -13,8 +13,10 @@
 
 {% block content %}
     <div class="container">
+        <!-- Plantilla para la página de "Realizar Reserva", que permite a los usuarios hacer una reserva en un restaurante específico -->
         <h1>Reservar en <span class="restaurant-name">{{ restaurante.nombre }}</span></h1>
         
+        <!-- Muestra mensajes de error debajo del título en caso de que haya algún problema con la reserva -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -25,29 +27,112 @@
             {% endif %}
         {% endwith %}
 
+        <!-- Sección del formulario de reserva, donde los usuarios pueden seleccionar la fecha, hora, mesa (de un desplegable que solo muestra las mesas que no tiene una reserva para fechas futuras) y número de personas para hacer una reserva -->
         <form method="POST">
             {{ form.hidden_tag() }}
+            <!-- Campo para seleccionar la fecha -->
             <div class="form-group">
                 {{ form.dia.label(class="form-control-label") }}
-                {{ form.dia(class="form-control") }}
+                {{ form.dia(class="form-control", id='fecha') }}
             </div>
-            <div class="form-group">
+            <!-- Campo, tipo select, para seleccionar la hora, inicialmente oculto -->
+            <div class="form-group" id="horaContainer" style="display:none;">
                 {{ form.hora.label(class="form-control-label") }}
-                {{ form.hora(class="form-control") }}
+                {{ form.hora(class="form-control", id='hora') }}
             </div>
-            <div class="form-group">
-                <label for="mesa" class="form-control-label">Mesa</label>
-                <select id="mesa" name="mesa" class="form-control">
-                    {% for value, label in form.mesa.choices %}
-                        <option value="{{ value }}">{{ label }}</option>
-                    {% endfor %}
-                </select>
+             <!-- Campo, tipo select, para seleccionar la mesa, inicialmente oculto -->
+            <div class="form-group" id="mesaContainer" style="display:none;">
+                {{ form.mesa.label(class="form-control-label") }}
+                {{ form.mesa(class="form-control", id='mesa') }}
             </div>
-            <div class="form-group">
+            <!-- Campo para escribir el número de personas, inicialmente oculto -->
+            <div class="form-group" id="personasContainer" style="display:none;">
                 {{ form.numero_personas.label(class="form-control-label") }}
                 {{ form.numero_personas(class="form-control") }}
             </div>
-            <button type="submit" class="btn btn-primary">Confimar reserva</button>
+            <!-- Botón para "Continuar" con la selección de la hora, después de haber seleccionado la fecha -->
+            <button type="button" class="btn btn-secondary" id="continuarBtn">Continuar</button>
+            <!-- Botón para mostrar el resto de inputs después de haber seleccionado la fecha y hora -->
+            <button type="button" class="btn btn-secondary" id="continuarBtn2" style="display: none;">Continuar</button>
+            <!-- Una vez seleccionado todo, aparece el botón para confirmar la reserva y enviar los datos a la base de datos -->
+            <button type="submit" class="btn btn-primary" id="submitBtn" style="display:none;">Confimar reserva</button>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fechaField = document.querySelector('#fecha');
+            const horaContainer = document.querySelector('#horaContainer');
+            const horaField = document.querySelector('#hora');
+            const mesaContainer = document.querySelector('#mesaContainer');
+            const mesaField = document.querySelector('#mesa');
+            const personasContainer = document.querySelector('#personasContainer');
+            const submitBtn = document.querySelector('#submitBtn');
+            const continuarBtn = document.querySelector('#continuarBtn');
+            const continuarBtn2 = document.querySelector('#continuarBtn2');
+        
+            // Maneja el evento de clic del primer botón "Continuar"
+            continuarBtn.addEventListener('click', function(event) {   
+                event.preventDefault(); // Evitar el envío del formulario     
+                const fecha = fechaField.value;
+                const horaSeleccionada = horaField.value; 
+                if (fecha) {
+                    fetch(`/horas_disponibles/{{ restaurante.id_restaurante }}?fecha=${fecha}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            horaField.innerHTML = '<option value="">Seleccione una hora</option>';
+                            data.horas.forEach(hora => {
+                                const option = document.createElement('option');
+                                option.value = hora[0];
+                                option.textContent = hora[1];
+                                horaField.appendChild(option);
+                            });
+                            // Si había una hora seleccionada previamente, establecerla nuevamente
+                            if (horaSeleccionada) {
+                                horaField.value = horaSeleccionada;
+                            }
+                            console.log(horaField.value);
+                            
+                            // Mostrar el contenedor de hora y el segundo botón "Conrinuar" y ocultar el primer botón "Continuar"
+                            horaContainer.style.display = 'block';
+                            continuarBtn.style.display = 'none';
+                            continuarBtn2.style.display = 'block';
+                        });
+                }
+            });
+        
+            // Maneja el evento de clic del segundo botón "Continuar"
+            continuarBtn2.addEventListener('click', function(event) {
+                event.preventDefault(); // Evitar el envío del formulario  
+                const fecha = fechaField.value;
+                const hora = horaField.value;
+                const mesaSeleccionada = mesaField.value;
+                if (fecha && hora) {
+                    fetch(`/mesas_disponibles/{{ restaurante.id_restaurante }}?fecha=${fecha}&hora=${hora}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            mesaField.innerHTML = '<option value="">Seleccione una mesa</option>';
+                            data.mesas.forEach(mesa => {
+                                const option = document.createElement('option');
+                                option.value = mesa[0];
+                                option.textContent = mesa[1];
+                                mesaField.appendChild(option);
+                            });
+
+                            if (mesaSeleccionada) {
+                                mesaField.value = mesaSeleccionada;
+                            }
+                            console.log(mesaField.value);
+
+                            // Mostrar el contenedor de mesa, número de personas y el botón de enviar y ocultar los botónes "Continuar"
+                            mesaContainer.style.display = 'block';
+                            personasContainer.style.display = 'block';
+                            submitBtn.style.display = 'block';
+                            continuarBtn.style.display = 'none';
+                            continuarBtn2.style.display = 'none';
+                        });
+                }
+            });
+        });
+    </script>
 {% endblock %}

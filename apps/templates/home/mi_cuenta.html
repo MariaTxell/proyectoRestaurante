@@ -21,19 +21,22 @@
 {% endblock stylesheets %}
 
 {% block content %}
+    <!-- Plantilla para la página de "Mi Cuenta", que muestra la información del usuario y su historial de reservas -->
     <div class="container">
         <h1>Mi Cuenta</h1>
         <br>
+        <!-- Sección de información del usuario, que muestra el nombre de usuario, correo electrónico y enlaces para editar y cambiar la contraseña -->
         <h2>Información de Usuario</h2>
         <div class="profile-info">
             <div>
                 <p><strong>Usuario:</strong> {{ current_user.username }}</p>
-                <p><strong>Email:</strong> <span class="text-email">{{ current_user.email }}</span> <a class="btn btn-primary btn-sm align-middle ml-2 btn-email" href="{{ url_for('home_blueprint.update_email') }}">Editar</a></p>
+                <p><strong>Email:</strong> <span class="text-email">{{ current_user.email }}</span> <a class="btn btn-primary btn-sm align-middle ml-2 btn-email" href="{{ url_for('authentication_blueprint.update_email') }}">Editar</a></p>
             </div>
-            <a href="{{ url_for('home_blueprint.update_password') }}" class="btn btn-secondary">Cambiar Contraseña</a>
+            <a href="{{ url_for('authentication_blueprint.update_password') }}" class="btn btn-secondary">Cambiar Contraseña</a>
         </div>
 
         <br><br>
+        <!-- Sección de historial de reservas, que muestra las reservas realizadas por el usuario, con la opción de cancelar reservas que tienen fecha a futuro -->
         <h2>Historial de Reservas</h2>
         <table class="table">
             <thead class="text-center">

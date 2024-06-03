@@ -4568,6 +4568,7 @@ textarea.form-control-lg {
   color: var(--bs-card-color);
 }
 
+/*añadimos una clase inventada para cambiar el tamaño y color de la mitad del titulo en las trajetas de Inicio*/
 .restaurant-location {
   color: #67748E;
   font-size: 16px;
